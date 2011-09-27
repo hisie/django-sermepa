@@ -26,7 +26,7 @@ Para utilizarlo sigue los siguientes pasos
 
     SERMEPA_URL_PRO = 'https://sis.sermepa.es/sis/realizarPago'
     SERMEPA_URL_TEST = 'https://sis-t.sermepa.es:25443/sis/realizarPago'
-    SERMEPA_MERCHANT_URL = "http://www.zikzakmedia.com"
+    SERMEPA_MERCHANT_URL = 'http://www.zikzakmedia.com'
     SERMEPA_MERCHANT_NAME = "Zikzakmedia SL"
     SERMEPA_MERCHANT_CODE = '000000000'
     SERMEPA_SECRET_KEY = 'erstedhgdydthe5yhgh6'
