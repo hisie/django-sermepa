@@ -24,8 +24,8 @@ Para utilizarlo sigue los siguientes pasos
 
 4. Añade los siguientes settings:
 
-	SERMEPA_URL_PRO = 'https://sis.sermepa.es/sis/realizarPago'
-	SERMEPA_URL_TEST = 'https://sis-t.sermepa.es:25443/sis/realizarPago'
+    SERMEPA_URL_PRO = 'https://sis.sermepa.es/sis/realizarPago'
+    SERMEPA_URL_TEST = 'https://sis-t.sermepa.es:25443/sis/realizarPago'
     SERMEPA_MERCHANT_URL = "http://www.zikzakmedia.com"
     SERMEPA_MERCHANT_NAME = "Zikzakmedia SL"
     SERMEPA_MERCHANT_CODE = '000000000'
@@ -35,7 +35,7 @@ Para utilizarlo sigue los siguientes pasos
     SERMEPA_CURRENCY = 978
     SERMEPA_TRANS_TYPE = 0 # 0 - Autorización / 1 - Preautorización / 2 - Confirmación / 3 - Devolución Automática / 4 - Pago Referencia / 5 - Transacción Recurrente / 6 - Transacción Sucesiva / 7 - Autenticación / 8 - Confirmación de Autenticación / 9 - Anulación de Preautorización
 
-	Deberás modificar SERMEPA_MERCHANT_CODE, SERMEPA_SECRET_KEY, SERMEPA_BUTTON_IMG
+    Deberás modificar SERMEPA_MERCHANT_CODE, SERMEPA_SECRET_KEY, SERMEPA_BUTTON_IMG
 
 5. Diseña tu vista para que los datos sean enviados a Sermepa:
 
@@ -70,22 +70,21 @@ Para utilizarlo sigue los siguientes pasos
 
 7. Programa las señales de OK, KO y si quieres de error::
  
-	from sermepa.sermepa.signals import payment_was_successful, payment_was_error, signature_error
-	def payment_ok(sender, **kwargs):
-			pass
+    from sermepa.sermepa.signals import payment_was_successful, payment_was_error, signature_error
+    def payment_ok(sender, **kwargs):
+        pass
 
-	def payment_ko(sender, **kwargs):
-			pass
+    def payment_ko(sender, **kwargs):
+        pass
 
-	def sermepa_ipn_error(sender, **kwargs):
-			pass
+    def sermepa_ipn_error(sender, **kwargs):
+        pass
 
-	payment_was_successful.connect(payment_ok)
-	payment_was_error.connect(payment_ko)
-	signature_error.connect(sermepa_ipn_error)
+    payment_was_successful.connect(payment_ok)
+    payment_was_error.connect(payment_ko)
+    signature_error.connect(sermepa_ipn_error)
  
 7. Utiliza el form de SermepaPaymentForm para inicializar el botón de pago, al estilo Paypal. 
  Mira el código del ejemplo (sermepa_test/views.py) para más info
  
-8. Relájate, sírvete un mojito y espera a hacerte rico.
- 
+8. Relájate, sírvete un "pa amb tomàquet" y espera a hacerte rico.
