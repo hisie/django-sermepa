@@ -4,8 +4,8 @@ from django.views.decorators.http import require_POST
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
-from sermepa.signals import *
-from sermepa.forms import SermepaResponseForm
+from sermepa.sermepa.signals import *
+from sermepa.sermepa.forms import SermepaResponseForm
 
 @csrf_exempt
 @require_POST

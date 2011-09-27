@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import *
 
-urlpatterns = patterns('sermepa.views',
+urlpatterns = patterns('sermepa.sermepa.views',
     url(
         regex=r'^$',
         view='sermepa_ipn',
