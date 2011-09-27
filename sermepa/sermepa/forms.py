@@ -36,13 +36,13 @@ class SermepaPaymentForm(forms.Form):
         self.initial['Ds_Merchant_MerchantSignature'] = sha1.hexdigest().upper()
         
     def render(self):
-        return mark_safe(u"""<form action="%s" method="post">
+        return mark_safe(u"""<form action="%s" method="post" id="servired_standard_checkout">
             %s
             <input type="image" src="%s" border="0" name="submit" alt="Comprar ahora" />
         </form>""" % (settings.SERMEPA_URL_PRO, self.as_p(), settings.SERMEPA_BUTTON_IMG))
         
     def sandbox(self):
-        return mark_safe(u"""<form action="%s" method="post">
+        return mark_safe(u"""<form action="%s" method="post" id="servired_standard_checkout">
             %s
             <input type="image" src="%s" border="0" name="submit" alt="Comprar ahora" />
         </form>""" % (settings.SERMEPA_URL_TEST, self.as_p(), settings.SERMEPA_BUTTON_IMG))

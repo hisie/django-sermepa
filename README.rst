@@ -6,27 +6,71 @@ Django sermepa es una aplicación muy al estilo de django-paypal para usar el TP
 
 Para utilizarlo sigue los siguientes pasos
 
-1. Copia la carpeta sermeta a tu proyecto
-2. Añadelo a INSTALLED_APPS
-3. Ojo, hay un nuevo modelo: syncdb o migrations
+1. Instalar: 
 
-4. Añade los siguientes settings::
+    python setup.py install
+
+2. Añadir INSTALLED_APPS
+
+    INSTALLED_APPS = (
+        ...
+        'sermepa.sermepa',
+        'sermepa.sermepa_test',
+    )
+
+3. Actualizar modelo:
+
+    python manage.py syncdb
+
+4. Añade los siguientes settings:
 
 	SERMEPA_URL_PRO = 'https://sis.sermepa.es/sis/realizarPago'
 	SERMEPA_URL_TEST = 'https://sis-t.sermepa.es:25443/sis/realizarPago'
-	SERMEPA_MERCHANT_CODE = '000000'
-	SERMEPA_SECRET_KEY = 'qwertyasdf0123456789'
-	SERMEPA_BUTTON_IMG = '/site_media/_img/targets.jpg'
+    SERMEPA_MERCHANT_URL = "http://www.zikzakmedia.com"
+    SERMEPA_MERCHANT_NAME = "Zikzakmedia SL"
+    SERMEPA_MERCHANT_CODE = '000000000'
+    SERMEPA_SECRET_KEY = 'erstedhgdydthe5yhgh6'
+    SERMEPA_BUTTON_IMG = '/static/images/icons/sermepa.png'
+    SERMEPA_TERMINAL = 1
+    SERMEPA_CURRENCY = 978
+    SERMEPA_TRANS_TYPE = 0 # 0 - Autorización / 1 - Preautorización / 2 - Confirmación / 3 - Devolución Automática / 4 - Pago Referencia / 5 - Transacción Recurrente / 6 - Transacción Sucesiva / 7 - Autenticación / 8 - Confirmación de Autenticación / 9 - Anulación de Preautorización
 
 	Deberás modificar SERMEPA_MERCHANT_CODE, SERMEPA_SECRET_KEY, SERMEPA_BUTTON_IMG
 
-5. Añade la ruta de la respuesta de Sermepa a tus urls::
+5. Diseña tu vista para que los datos sean enviados a Sermepa:
 
-	 (r'^sermepa/', include('sermepa.urls')),
-	 
-6. Programa las señales de OK, KO y si quieres de error::
+    from sermepa.sermepa.forms import SermepaPaymentForm
+    from sermepa.sermepa.signals import payment_was_successful, payment_was_error, signature_error
+
+    sermepa_dict = {
+        "Ds_Merchant_Titular": SERMEPA_MERCHANT_NAME,
+        "Ds_Merchant_MerchantData": '',
+        "Ds_Merchant_MerchantName": SERMEPA_MERCHANT_NAME,
+        "Ds_Merchant_ProductDescription": 'Mis productos',
+        "Ds_Merchant_Amount": int(amount* 100),
+        "Ds_Merchant_TransactionType": SERMEPA_TRANS_TYPE,
+        "Ds_Merchant_Terminal": SERMEPA_TERMINAL,
+        "Ds_Merchant_MerchantCode": SERMEPA_MERCHANT_CODE,
+        "Ds_Merchant_Order": 'PV0001',
+        "Ds_Merchant_Currency": SERMEPA_CURRENCY,
+        "Ds_Merchant_MerchantURL": SERMEPA_MERCHANT_URL,
+        "Ds_Merchant_UrlOK": "http://%s%s" % (site.domain, '/payment/sermepa/confirm'),
+        "Ds_Merchant_UrlKO": "http://%s%s" % (site.domain, '/payment/sermepa/error'),
+    }
+
+    form = SermepaPaymentForm(initial=sermepa_dict)
+
+    return HttpResponse(render_to_response('sermepa/form.html', locals(), context_instance=RequestContext(request)))
+
+6. Diseña tus urls:
+
+    (r'^payment/sermepa/error', 'payment.sermepa.views.sermepa_error'),
+    (r'^payment/sermepa/confirm', 'payment.sermepa.views.sermepa_confirm'),
+    (r'^payment/sermepa/', 'payment.sermepa.views.index'),
+
+7. Programa las señales de OK, KO y si quieres de error::
  
-	from sermepa.signals import payment_was_successful, payment_was_error, signature_error
+	from sermepa.sermepa.signals import payment_was_successful, payment_was_error, signature_error
 	def payment_ok(sender, **kwargs):
 			pass
 
